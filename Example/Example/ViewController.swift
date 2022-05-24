@@ -156,31 +156,30 @@ class ViewController: UIViewController {
              .indexLabelTextColor(.white)
          */
         
-        let editImageConfiguration = ZLPhotoConfiguration.default().editImageConfiguration
-        editImageConfiguration
-            .imageStickerContainerView(ImageStickerContainerView())
+//        let editImageConfiguration = ZLPhotoConfiguration.default().editImageConfiguration
+//        editImageConfiguration
+//            .imageStickerContainerView(ImageStickerContainerView())
 //            .tools([.draw, .filter, .adjust, .mosaic])
 //            .adjustTools([.brightness, .contrast, .saturation])
 //            .clipRatios([.custom, .circle, .wh1x1, .wh3x4, .wh16x9, ZLImageClipRatio(title: "2 : 1", whRatio: 2 / 1)])
 //            .imageStickerContainerView(ImageStickerContainerView())
 //            .filters([.normal, .process, ZLFilter(name: "custom", applier: ZLCustomFilter.hazeRemovalFilter)])
-        
-        ZLPhotoConfiguration.default()
-            .editImageConfiguration(editImageConfiguration)
-            // You can first determine whether the asset is allowed to be selected.
-            .canSelectAsset { asset in
-                return true
-            }
-            .noAuthorityCallback { type in
-                switch type {
-                case .library:
-                    debugPrint("No library authority")
-                case .camera:
-                    debugPrint("No camera authority")
-                case .microphone:
-                    debugPrint("No microphone authority")
-                }
-            }
+//        ZLPhotoConfiguration.default()
+//            .editImageConfiguration(editImageConfiguration)
+//            // You can first determine whether the asset is allowed to be selected.
+//            .canSelectAsset { asset in
+//                return true
+//            }
+//            .noAuthorityCallback { type in
+//                switch type {
+//                case .library:
+//                    debugPrint("No library authority")
+//                case .camera:
+//                    debugPrint("No camera authority")
+//                case .microphone:
+//                    debugPrint("No microphone authority")
+//                }
+//            }
 //            .operateBeforeDoneAction { currVC, block in
 //                // Do something before select photo result callback, and then call block to continue done action.
 //                block()

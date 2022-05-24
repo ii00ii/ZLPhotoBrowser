@@ -32,4 +32,10 @@ extension Int {
         self = bool ? 1 : 0
     }
     
+    var formatterSize: String {
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useMB]
+        bcf.countStyle = .file
+        return bcf.string(fromByteCount: Int64(self))
+    }
 }

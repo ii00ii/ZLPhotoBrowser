@@ -35,4 +35,13 @@ extension PHAsset {
         return !(resource.value(forKey: "locallyAvailable") as? Bool ?? true)
     }
     
+    var assetResource: (type: PHAssetResourceType, filename: String, fileSize: Int)? {
+        guard let resource = PHAssetResource.assetResources(for: self).first else {
+            return nil
+        }
+        return (resource.type,
+                resource.originalFilename,
+                resource.value(forKey: "fileSize") as? Int) as? (type: PHAssetResourceType, filename: String, fileSize: Int)
+    }
+    
 }

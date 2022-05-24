@@ -230,6 +230,9 @@ public struct ZLLocalLanguageKey: Hashable {
     
     /// Drag here to remove (拖到此处删除)
     public static let textStickerRemoveTips = ZLLocalLanguageKey(rawValue: "textStickerRemoveTips")
+    
+    /// compress (压缩)
+    public static let compress = ZLLocalLanguageKey(rawValue: "compress")
 }
 
 func localLanguageTextValue(_ key: ZLLocalLanguageKey) -> String {

@@ -252,7 +252,7 @@ public class ZLPhotoUIConfiguration: NSObject {
     
     /// The normal state background color of bottom tool view buttons.
     /// 相册小图界面底部按钮可交互状态下背景色
-    @objc public var bottomToolViewBtnNormalBgColor = zlRGB(80, 169, 56)
+    @objc public var bottomToolViewBtnNormalBgColor = zlRGB(61, 105, 219)
     
     /// The normal state background color of bottom tool view buttons in preview interface.
     /// 预览大图界面底部按钮可交互状态下背景色
@@ -260,7 +260,7 @@ public class ZLPhotoUIConfiguration: NSObject {
     
     /// The disable state background color of bottom tool view buttons.
     /// 相册小图界面底部按钮不可交互状态下背景色
-    @objc public var bottomToolViewBtnDisableBgColor = zlRGB(50, 50, 50)
+    @objc public var bottomToolViewBtnDisableBgColor = zlRGB(224, 224, 224)
     
     /// The disable state background color of bottom tool view buttons in preview interface.
     /// 预览大图界面底部按钮不可交互状态下背景色

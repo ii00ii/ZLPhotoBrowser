@@ -117,7 +117,7 @@ public class ZLPhotoConfiguration: NSObject {
         }
     }
     
-    var pri_allowEditImage = true
+    var pri_allowEditImage = false
     @objc public var allowEditImage: Bool {
         get {
             return pri_allowEditImage && shouldAnialysisAsset
@@ -172,16 +172,19 @@ public class ZLPhotoConfiguration: NSObject {
     @objc public var allowDragSelect = false
     
     /// Allow select full image. Defaults to true.
-    @objc public var allowSelectOriginal = true
+    @objc public var allowSelectOriginal = false
     
     /// Allow access to the preview large image interface (That is, whether to allow access to the large image interface after clicking the thumbnail image). Defaults to true.
     @objc public var allowPreviewPhotos = true
     
     /// Whether to show the preview button (i.e. the preview button in the lower left corner of the thumbnail interface). Defaults to true.
-    @objc public var showPreviewButtonInAlbum = true
+    @objc public var showPreviewButtonInAlbum = false
     
     /// Whether to display the selected count on the button. Defaults to true.
-    @objc public var showSelectCountOnDoneBtn = true
+    @objc public var showSelectCountOnDoneBtn = false
+    
+    /// 压缩
+    @objc public var allowCompressImage = false
     
     private var pri_columnCount: Int = 4
     /// The column count when iPhone is in portait mode. Minimum is 2, maximum is 6. Defaults to 4.
@@ -227,10 +230,10 @@ public class ZLPhotoConfiguration: NSObject {
     @objc public var showInvalidMask = true
     
     /// Display the index of the selected photos. Defaults to true.
-    @objc public var showSelectedIndex = true
+    @objc public var showSelectedIndex = false
     
     /// Display the selected photos at the bottom of the preview large photos interface. Defaults to true.
-    @objc public var showSelectedPhotoPreview = true
+    @objc public var showSelectedPhotoPreview = false
     
     /// Allow framework fetch photos when callback. Defaults to true.
     @objc public var shouldAnialysisAsset = true

@@ -33,13 +33,13 @@ enum ZLLayout {
     
     static let bottomToolViewH: CGFloat = 55
     
-    static let bottomToolBtnH: CGFloat = 34
+    static let bottomToolBtnH: CGFloat = 26
     
     static let bottomToolBtnY: CGFloat = 10
     
-    static let bottomToolTitleFont = getFont(17)
+    static let bottomToolTitleFont = getFont(14)
     
-    static let bottomToolBtnCornerRadius: CGFloat = 5
+    static let bottomToolBtnCornerRadius: CGFloat = 13
     
     static let thumbCollectionViewItemSpacing: CGFloat = 2
     

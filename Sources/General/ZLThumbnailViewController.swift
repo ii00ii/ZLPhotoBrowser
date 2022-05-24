@@ -89,9 +89,30 @@ class ZLThumbnailViewController: UIViewController {
     
     private lazy var doneBtn: UIButton = {
         let btn = createBtn(localLanguageTextValue(.done), #selector(doneBtnClick), true)
+        btn.titleLabel?.font = .systemFont(ofSize: 14.0)
         btn.layer.masksToBounds = true
         btn.layer.cornerRadius = ZLLayout.bottomToolBtnCornerRadius
         return btn
+    }()
+    
+    private lazy var compressBtn: UIButton = {
+        let btn = UIButton()
+        btn.isSelected = ZLPhotoConfiguration.default().allowCompressImage
+        btn.setTitle(localLanguageTextValue(.compress), for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = ZLLayout.bottomToolTitleFont
+        btn.setImage(getImage("zl_btn_original_circle"), for: .normal)
+        btn.setImage(getImage("zl_btn_original_selected"), for: .selected)
+        btn.setImage(getImage("zl_btn_original_selected"), for: [.selected, .highlighted])
+        btn.addTarget(self, action: #selector(compressClick), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var tipsLabel: UILabel = {
+        let label = UILabel()
+        label.font = ZLLayout.bottomToolTitleFont
+        label.textColor = UIColor(red: 153 / 255, green: 153 / 255, blue: 153 / 255, alpha: 1)
+        return label
     }()
     
     /// 所有滑动经过的indexPath
@@ -326,6 +347,13 @@ class ZLThumbnailViewController: UIViewController {
             originalBtn.frame = CGRect(x: (bottomView.bounds.width - originBtnMaxW) / 2 - 5, y: btnY, width: originBtnMaxW, height: btnH)
             
             refreshDoneBtnFrame()
+            
+            let compressTitle = localLanguageTextValue(.compress)
+            let compressBtnW = compressTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+            compressBtn.frame = CGRect(x: 15, y: btnY, width: compressBtnW, height: btnH)
+            
+            let tipsLabelW = compressTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+            tipsLabel.frame = CGRect(x: (bottomView.bounds.width - tipsLabelW) * 0.5, y: btnY, width: tipsLabelW, height: btnH)
         }
     }
     
@@ -350,6 +378,8 @@ class ZLThumbnailViewController: UIViewController {
         bottomView.addSubview(previewBtn)
         bottomView.addSubview(originalBtn)
         bottomView.addSubview(doneBtn)
+        bottomView.addSubview(compressBtn)
+        bottomView.addSubview(tipsLabel)
         
         setupNavView()
     }
@@ -486,6 +516,12 @@ class ZLThumbnailViewController: UIViewController {
         } else {
             nav?.selectImageBlock?()
         }
+    }
+    
+    @objc private func compressClick() {
+        compressBtn.isSelected = !compressBtn.isSelected
+        ZLPhotoConfiguration.default().allowCompressImage = compressBtn.isSelected
+        resetBottomToolBtnStatus()
     }
     
     @objc private func deviceOrientationChanged(_ notify: Notification) {
@@ -709,13 +745,28 @@ class ZLThumbnailViewController: UIViewController {
             doneBtn.isEnabled = true
             doneBtn.setTitle(doneTitle, for: .normal)
             doneBtn.backgroundColor = .bottomToolViewBtnNormalBgColor
+            var size: Int = 0
+            for model in nav.arrSelectedModels {
+                guard let resource = model.asset.assetResource else { continue }
+                size += resource.fileSize
+            }
+            if ZLPhotoConfiguration.default().allowCompressImage {
+                size = Int(Float(size) * 0.3)
+            }
+            tipsLabel.text = "已选择\(nav.arrSelectedModels.count)个文件(\(size.formatterSize))"
         } else {
             previewBtn.isEnabled = false
             doneBtn.isEnabled = false
             doneBtn.setTitle(doneTitle, for: .normal)
             doneBtn.backgroundColor = .bottomToolViewBtnDisableBgColor
+            tipsLabel.text = ""
         }
+        
+        let btnY = showLimitAuthTipsView ? ZLLimitedAuthorityTipsView.height + ZLLayout.bottomToolBtnY : ZLLayout.bottomToolBtnY
+        let tipsLabelW = tipsLabel.text!.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        tipsLabel.frame = CGRect(x: (bottomView.bounds.width - tipsLabelW) * 0.5, y: btnY, width: tipsLabelW, height: ZLLayout.bottomToolBtnH)
         originalBtn.isSelected = nav.isSelectedOriginal
+        compressBtn.isSelected = ZLPhotoConfiguration.default().allowCompressImage
         refreshDoneBtnFrame()
     }
     
@@ -725,8 +776,10 @@ class ZLThumbnailViewController: UIViewController {
         if ZLPhotoConfiguration.default().showSelectCountOnDoneBtn, selCount > 0 {
             doneTitle += "(" + String(selCount) + ")"
         }
-        let doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
-        
+        var doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        if doneBtnW < 58.0 {
+            doneBtnW = 58.0
+        }
         let btnY = showLimitAuthTipsView ? ZLLimitedAuthorityTipsView.height + ZLLayout.bottomToolBtnY : ZLLayout.bottomToolBtnY
         doneBtn.frame = CGRect(x: bottomView.bounds.width - doneBtnW - 15, y: btnY, width: doneBtnW, height: ZLLayout.bottomToolBtnH)
     }
