@@ -168,8 +168,9 @@ public class ZLImagePreviewController: UIViewController {
             obj is PHAsset || obj is UIImage || obj is URL
         }
         self.datas = filterDatas
-        selectStatus = Array(repeating: true, count: filterDatas.count)
+        selectStatus = Array(repeating: false, count: filterDatas.count)
         currentIndex = index >= filterDatas.count ? 0 : index
+        selectStatus[currentIndex] = true
         indexBeforOrientationChanged = currentIndex
         self.showSelectBtn = showSelectBtn
         self.showBottomView = showSelectBtn ? true : showBottomView
