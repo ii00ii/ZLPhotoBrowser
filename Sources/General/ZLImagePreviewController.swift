@@ -161,6 +161,8 @@ public class ZLImagePreviewController: UIViewController {
     
     @objc public var doneBlock: (([Any]) -> Void)?
     
+    @objc public var backBlock: (([Any]) -> Void)?
+    
     @objc public var videoHttpHeader: [String: Any]?
     
     override public var prefersStatusBarHidden: Bool {
@@ -392,6 +394,16 @@ public class ZLImagePreviewController: UIViewController {
     // MARK: btn actions
     
     @objc private func backBtnClick() {
+        if showSelectBtn {
+            let res = datas.enumerated().filter { index, _ -> Bool in
+                self.selectStatus[index]
+            }.map { _, v -> Any in
+                v
+            }
+            backBlock?(res)
+        } else {
+            backBlock?(datas)
+        }
         dismiss()
     }
     
