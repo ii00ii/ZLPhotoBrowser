@@ -165,7 +165,7 @@ public class ZLImagePreviewController: UIViewController {
         urlImageLoader: ((URL, UIImageView, @escaping (CGFloat) -> Void, @escaping () -> Void) -> Void)? = nil
     ) {
         let filterDatas = datas.filter { obj -> Bool in
-            obj is PHAsset || obj is UIImage || obj is URL
+            obj is PHAsset || obj is UIImage || obj is URL || obj is ZLPhotoModel
         }
         self.datas = filterDatas
         selectStatus = Array(repeating: true, count: filterDatas.count)
