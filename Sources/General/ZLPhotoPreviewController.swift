@@ -312,7 +312,10 @@ class ZLPhotoPreviewController: UIViewController {
         if ZLPhotoConfiguration.default().showSelectCountOnDoneBtn, selCount > 0 {
             doneTitle += "(" + String(selCount) + ")"
         }
-        let doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        var doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        if doneBtnW < 58.0 {
+            doneBtnW = 58.0
+        }
         doneBtn.frame = CGRect(x: bottomView.bounds.width - doneBtnW - 15, y: btnY, width: doneBtnW, height: btnH)
         
         let compressTitle = localLanguageTextValue(.compress)
@@ -496,15 +499,16 @@ class ZLPhotoPreviewController: UIViewController {
             if nav.arrSelectedModels.count != 0 {
                 var size: Int = 0
                 for model in nav.arrSelectedModels {
-                    guard let resource = model.asset.assetResource else { continue }
-                    size += resource.fileSize
+                    size += model.asset.fileSize
                 }
                 if ZLPhotoConfiguration.default().allowCompressImage {
                     size = Int(Float(size) * 0.3)
                 }
                 tipsLabel.text = "已选择\(nav.arrSelectedModels.count)个文件(\(size.formatterSize))"
+                doneBtn.backgroundColor = .bottomToolViewBtnNormalBgColor
             } else {
                 tipsLabel.text = ""
+                doneBtn.backgroundColor = .bottomToolViewBtnDisableBgColor
             }
             var showSelPhotoPreview = false
             if ZLPhotoConfiguration.default().showSelectedPhotoPreview, let nav = navigationController as? ZLImageNavController {
@@ -529,15 +533,16 @@ class ZLPhotoPreviewController: UIViewController {
         if nav.arrSelectedModels.count != 0 {
             var size: Int = 0
             for model in nav.arrSelectedModels {
-                guard let resource = model.asset.assetResource else { continue }
-                size += resource.fileSize
+                size += model.asset.fileSize
             }
             if ZLPhotoConfiguration.default().allowCompressImage {
                 size = Int(Float(size) * 0.3)
             }
             tipsLabel.text = "已选择\(nav.arrSelectedModels.count)个文件(\(size.formatterSize))"
+            doneBtn.backgroundColor = .bottomToolViewBtnNormalBgColor
         } else {
             tipsLabel.text = ""
+            doneBtn.backgroundColor = .bottomToolViewBtnDisableBgColor
         }
         var showSelPhotoPreview = false
         if ZLPhotoConfiguration.default().showSelectedPhotoPreview, let nav = navigationController as? ZLImageNavController {

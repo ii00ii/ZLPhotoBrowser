@@ -34,7 +34,7 @@ extension Int {
     
     var formatterSize: String {
         let bcf = ByteCountFormatter()
-        bcf.allowedUnits = [.useMB]
+        bcf.allowedUnits = [.useMB, .useKB]
         bcf.countStyle = .file
         return bcf.string(fromByteCount: Int64(self))
     }

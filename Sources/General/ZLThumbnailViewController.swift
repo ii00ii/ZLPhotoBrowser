@@ -747,8 +747,7 @@ class ZLThumbnailViewController: UIViewController {
             doneBtn.backgroundColor = .bottomToolViewBtnNormalBgColor
             var size: Int = 0
             for model in nav.arrSelectedModels {
-                guard let resource = model.asset.assetResource else { continue }
-                size += resource.fileSize
+                size += model.asset.fileSize
             }
             if ZLPhotoConfiguration.default().allowCompressImage {
                 size = Int(Float(size) * 0.3)

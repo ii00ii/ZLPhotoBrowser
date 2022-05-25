@@ -130,6 +130,27 @@ public class ZLImagePreviewController: UIViewController {
         return btn
     }()
     
+    private lazy var compressBtn: UIButton = {
+        let btn = UIButton()
+        btn.isSelected = ZLPhotoConfiguration.default().allowCompressImage
+        btn.setTitle(localLanguageTextValue(.compress), for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = ZLLayout.bottomToolTitleFont
+        btn.setImage(getImage("zl_btn_original_circle"), for: .normal)
+        btn.setImage(getImage("zl_btn_original_selected"), for: .selected)
+        btn.setImage(getImage("zl_btn_original_selected"), for: [.selected, .highlighted])
+        btn.addTarget(self, action: #selector(compressClick), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var tipsLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = ZLLayout.bottomToolTitleFont
+        label.textColor = UIColor(red: 153 / 255, green: 153 / 255, blue: 153 / 255, alpha: 1)
+        return label
+    }()
+    
     private var isFirstAppear = true
     
     private var hideNavView = false
@@ -287,6 +308,9 @@ public class ZLImagePreviewController: UIViewController {
         }
         
         bottomView.addSubview(doneBtn)
+        bottomView.addSubview(compressBtn)
+        bottomView.addSubview(tipsLabel)
+        
         view.bringSubviewToFront(navView)
     }
     
@@ -300,6 +324,28 @@ public class ZLImagePreviewController: UIViewController {
         }
         
         resetBottomViewFrame()
+        
+        // 刷新确定
+        let res = datas.enumerated().filter { index, _ -> Bool in
+            self.selectStatus[index]
+        }.map { _, v -> Any in
+            v
+        }
+        if res.count > 0 {
+            doneBtn.backgroundColor = .bottomToolViewBtnNormalBgColor
+            var size: Int = 0
+            for asset in res where asset is PHAsset {
+                guard let asset = asset as? PHAsset else { continue }
+                size += asset.fileSize
+            }
+            if ZLPhotoConfiguration.default().allowCompressImage {
+                size = Int(Float(size) * 0.3)
+            }
+            tipsLabel.text = "已选择\(res.count)个文件(\(size.formatterSize))"
+        } else {
+            doneBtn.backgroundColor = .bottomToolViewBtnDisableBgColor
+            tipsLabel.text = ""
+        }
     }
     
     private func resetBottomViewFrame() {
@@ -317,9 +363,19 @@ public class ZLImagePreviewController: UIViewController {
            selCount > 0 {
             doneTitle += "(" + String(selCount) + ")"
         }
-        let doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        var doneBtnW = doneTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        if doneBtnW < 58.0 {
+            doneBtnW = 58.0
+        }
         doneBtn.frame = CGRect(x: bottomView.bounds.width - doneBtnW - 15, y: btnY, width: doneBtnW, height: ZLLayout.bottomToolBtnH)
         doneBtn.setTitle(doneTitle, for: .normal)
+        
+        let compressTitle = localLanguageTextValue(.compress)
+        let compressBtnW = compressTitle.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        compressBtn.frame = CGRect(x: 15, y: btnY, width: compressBtnW, height: ZLLayout.bottomToolBtnH)
+        
+        let tipsLabelW = tipsLabel.text!.boundingRect(font: ZLLayout.bottomToolTitleFont, limitSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 30)).width + 20
+        tipsLabel.frame = CGRect(x: (bottomView.bounds.width - tipsLabelW) * 0.5, y: btnY, width: tipsLabelW, height: ZLLayout.bottomToolBtnH)
     }
     
     private func dismiss() {
@@ -385,6 +441,11 @@ public class ZLImagePreviewController: UIViewController {
         }
     }
     
+    @objc private func compressClick() {
+        compressBtn.isSelected = !compressBtn.isSelected
+        ZLPhotoConfiguration.default().allowCompressImage = compressBtn.isSelected
+        resetSubViewStatus()
+    }
 }
 
 // scroll view delegate
