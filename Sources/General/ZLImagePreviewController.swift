@@ -159,6 +159,7 @@ public class ZLImagePreviewController: UIViewController {
     @objc public init(
         datas: [Any],
         index: Int = 0,
+        selectedIndex: [Int] = [0],
         showSelectBtn: Bool = true,
         showBottomView: Bool = true,
         urlType: ((URL) -> ZLURLType)? = nil,
@@ -170,7 +171,10 @@ public class ZLImagePreviewController: UIViewController {
         self.datas = filterDatas
         selectStatus = Array(repeating: false, count: filterDatas.count)
         currentIndex = index >= filterDatas.count ? 0 : index
-        selectStatus[currentIndex] = true
+        for i in selectedIndex {
+            let _i = (i >= filterDatas.count || i < 0) ? 0 : i
+            selectStatus[_i] = true
+        }
         indexBeforOrientationChanged = currentIndex
         self.showSelectBtn = showSelectBtn
         self.showBottomView = showSelectBtn ? true : showBottomView
