@@ -323,8 +323,6 @@ public class ZLImagePreviewController: UIViewController {
             selectBtn.isHidden = true
         }
         
-        resetBottomViewFrame()
-        
         // 刷新确定
         let res = datas.enumerated().filter { index, _ -> Bool in
             self.selectStatus[index]
@@ -346,6 +344,8 @@ public class ZLImagePreviewController: UIViewController {
             doneBtn.backgroundColor = .bottomToolViewBtnDisableBgColor
             tipsLabel.text = ""
         }
+        
+        resetBottomViewFrame()
     }
     
     private func resetBottomViewFrame() {
