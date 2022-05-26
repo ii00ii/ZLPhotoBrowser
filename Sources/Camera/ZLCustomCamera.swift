@@ -551,7 +551,17 @@ open class ZLCustomCamera: UIViewController, CAAnimationDelegate {
     
     func showAlertAndDismissAfterDoneAction(message: String, type: ZLNoAuthorityType?) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: localLanguageTextValue(.done), style: .default) { (_) in
+        let action = UIAlertAction(title: localLanguageTextValue(.cancel), style: .default) { (_) in
+            self.dismiss(animated: true) {
+                if let t = type {
+                    ZLPhotoConfiguration.default().noAuthorityCallback?(t)
+                }
+            }
+        }
+        let setting = UIAlertAction(title: localLanguageTextValue(.openToAccessAuthority), style: .default) { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly : false], completionHandler: nil)
+            }
             self.dismiss(animated: true) {
                 if let t = type {
                     ZLPhotoConfiguration.default().noAuthorityCallback?(t)
@@ -559,6 +569,7 @@ open class ZLCustomCamera: UIViewController, CAAnimationDelegate {
             }
         }
         alert.addAction(action)
+        alert.addAction(setting)
         showAlertController(alert)
     }
     

@@ -39,9 +39,12 @@ class ZLThumbnailPhotoCell: UICollectionViewCell {
     
     private lazy var descLabel: UILabel = {
         let label = UILabel()
-        label.font = getFont(13)
-        label.textAlignment = .right
+        label.font = getFont(12)
+        label.textAlignment = .center
         label.textColor = .white
+        label.backgroundColor = .black.withAlphaComponent(0.45)
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 2
         return label
     }()
     
@@ -148,7 +151,8 @@ class ZLThumbnailPhotoCell: UICollectionViewCell {
         videoTag.frame = CGRect(x: 5, y: 1, width: 20, height: 15)
         livePhotoTag.frame = CGRect(x: 5, y: -1, width: 20, height: 20)
         editImageTag.frame = CGRect(x: 5, y: -1, width: 20, height: 20)
-        descLabel.frame = CGRect(x: 30, y: 1, width: bounds.width - 35, height: 17)
+        let descW = descLabel.text!.boundingRect(font: UIFont.systemFont(ofSize: 12.0), limitSize: CGSize(width: bottomShadowView.bounds.width - 12, height: 16)).width + 6
+        descLabel.frame = CGRect(x: bottomShadowView.bounds.width - descW - 6, y: 1, width: descW, height: 16)
         progressView.frame = CGRect(x: (bounds.width - 20) / 2, y: (bounds.height - 20) / 2, width: 20, height: 20)
         
         super.layoutSubviews()
@@ -182,22 +186,25 @@ class ZLThumbnailPhotoCell: UICollectionViewCell {
         
         if model.type == .video {
             bottomShadowView.isHidden = false
-            videoTag.isHidden = false
+            videoTag.isHidden = true
             livePhotoTag.isHidden = true
             editImageTag.isHidden = true
             descLabel.text = model.duration
+            descLabel.isHidden = false
         } else if model.type == .gif {
             bottomShadowView.isHidden = !ZLPhotoConfiguration.default().allowSelectGif
             videoTag.isHidden = true
             livePhotoTag.isHidden = true
             editImageTag.isHidden = true
             descLabel.text = "GIF"
+            descLabel.isHidden = false
         } else if model.type == .livePhoto {
             bottomShadowView.isHidden = !ZLPhotoConfiguration.default().allowSelectLivePhoto
             videoTag.isHidden = true
             livePhotoTag.isHidden = false
             editImageTag.isHidden = true
             descLabel.text = "Live"
+            descLabel.isHidden = false
         } else {
             if let _ = model.editImage {
                 bottomShadowView.isHidden = false
@@ -205,8 +212,11 @@ class ZLThumbnailPhotoCell: UICollectionViewCell {
                 livePhotoTag.isHidden = true
                 editImageTag.isHidden = false
                 descLabel.text = ""
+                descLabel.isHidden = true
             } else {
                 bottomShadowView.isHidden = true
+                descLabel.text = ""
+                descLabel.isHidden = true
             }
         }
         

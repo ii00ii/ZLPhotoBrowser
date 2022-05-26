@@ -233,6 +233,9 @@ public struct ZLLocalLanguageKey: Hashable {
     
     /// compress (压缩)
     public static let compress = ZLLocalLanguageKey(rawValue: "compress")
+    
+    /// openToAccessAuthority (去开启)
+    public static let openToAccessAuthority = ZLLocalLanguageKey(rawValue: "openToAccessAuthority")
 }
 
 func localLanguageTextValue(_ key: ZLLocalLanguageKey) -> String {

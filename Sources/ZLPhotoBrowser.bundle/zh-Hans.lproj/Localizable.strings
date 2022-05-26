@@ -4,8 +4,8 @@
 "cancel" = "取消";
 
 "originalPhoto" = "原图";
-"done" = "确定";
-"ok" = "确定";
+"done" = "完成";
+"ok" = "完成";
 "editFinish" = "完成";
 
 "back" = "返回";
@@ -30,9 +30,10 @@
 "exceededMaxVideoSelectCount" = "最多只能选择%ld个视频";
 "lessThanMinVideoSelectCount" = "最少选择%ld个视频";
 
-"noCameraAuthority" = "请在iPhone的\"设置 > 隐私 > 相机\"选项中，允许%@访问你的相机";
-"noPhotoLibratyAuthority" = "请在iPhone的\"设置 > 隐私 >照片\"选项中，允许%@访问你的照片";
-"noMicrophoneAuthority" = "无法录制声音，前往\"设置 > %@\"中打开麦克风权限";
+//"noCameraAuthority" = "请在iPhone的\"设置 > 隐私 > 相机\"选项中，允许%@访问你的相机";
+"noCameraAuthority" = "为了向您提供扫码登录、拍摄照片/视频上传等服务，需要您允许开启相机访问权限";
+"noPhotoLibratyAuthority" = "为了向您提供上传图片/视频、保存图片/视频至本地相册等服务，需要您允许开启相册访问权限";
+"noMicrophoneAuthority" = "为了向您提供录制视频添加为邮件附件等服务";
 "cameraUnavailable" = "相机不可用";
 "keepRecording" = "继续拍摄";
 "gotoSettings" = "前往设置";
@@ -70,3 +71,4 @@
 "textStickerRemoveTips" = "拖到此处删除";
 
 "compress" = " 压缩";
+"openToAccessAuthority" = "去开启权限";
