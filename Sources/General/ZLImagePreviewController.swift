@@ -408,6 +408,12 @@ public class ZLImagePreviewController: UIViewController {
     }
     
     @objc private func selectBtnClick() {
+        let res = datas.enumerated().filter { index, _ -> Bool in
+            self.selectStatus[index]
+        }.map { _, v -> Any in
+            v
+        }
+        if res.count >= ZLPhotoConfiguration.default().maxSelectCount { return }
         var isSelected = selectStatus[currentIndex]
         selectBtn.layer.removeAllAnimations()
         if isSelected {
